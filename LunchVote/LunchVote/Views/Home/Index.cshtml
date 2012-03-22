@@ -1,0 +1,65 @@
+﻿@model IEnumerable<DiningOption>
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<script type="text/javascript">
+    $().ready(function () {
+        var nominateDialog = $('#nominate-section');
+        $('a.nominate').click(function () {
+            $.ajax({
+                url: '@Url.Action("Nominate", "Location")',
+                type: 'GET',
+                success: function (data) {
+                    nominateDialog.html(data);
+
+                    nominateDialog.dialog({
+                        buttons: {
+                            OK: function () { window.location = '@Url.Action("Index")' }
+                        },
+                        close: function () { window.location = '@Url.Action("Index")' },
+                        modal: true,
+                        resizeable: false,
+                        width: 600
+                    });
+                }
+            });
+            return false;
+        });
+
+        nominateDialog.delegate('a.add-location', 'click', function () { 
+            $.ajax({
+                url: '@Url.Action("Nominate", "Location")',
+                type: 'POST',
+                data: JSON.stringify({'locationId':$(this).data('locationid')}),
+                contentType: 'application/json',
+            });
+            return false;
+        });
+
+        $('.vote').click(function(){
+            $.ajax({
+                url: '@Url.Action("Vote")',
+                type: 'POST',
+                data: JSON.stringify({'optionId':$(this).data('option-id')}),
+                contentType: 'application/json',
+            });
+            return false;
+        });
+    });
+</script>
+
+<h2>@ViewBag.Message</h2>
+
+<a class="nominate">Nominate A Location</a>
+
+<ul>
+@foreach (var option in Model.OrderByDescending(o => o.Votes))
+{
+    <li>
+        <a class="vote" data-option-id="@option.Id"><img src="@Url.Content("~/Content/upvote.jpg")" height="25" /></a>@option.Location.Name
+    </li>
+}
+</ul>
+
+<div id="nominate-section"></div>
