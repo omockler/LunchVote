@@ -6,6 +6,9 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
 using LunchVote.Models;
+using System.Net;
+using System.IO;
+using System.Runtime.Serialization.Json;
 
 namespace LunchVote.Controllers
 {
@@ -49,6 +52,50 @@ namespace LunchVote.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        public ActionResult FacebookLogin()
+        {
+            // redirect to https://graph.facebook.com/oauth/authorize giving Facebook my application id, the request type and the redirect url
+            return new RedirectResult("https://graph.facebook.com/oauth/authorize? type=web_server& client_id=255163017908337 redirect_uri=http://lunchvote.apphb.com/Account/handshake/");
+        }
+
+        public ActionResult Handshake(string code)
+        {
+            var clientId = "255163017908337";
+            var secretKey = ""; // TODO: Add secret facebook key later
+
+            string url = "https://graph.facebook.com/oauth/access_token?client_id={0}&redirect_uri={1}&client_secret={2}&code={3}";
+            string redirectUri = "http://lunchvote.apphb.com/Account/handshake/";
+
+            var request = WebRequest.Create(string.Format(url, clientId, redirectUri, secretKey, code));
+
+            var response = request.GetResponse();
+            var stream = response.GetResponseStream();
+            var encode = System.Text.Encoding.GetEncoding("utf-8");
+            var reader = new StreamReader(stream, encode);
+            var accessToken = reader.ReadToEnd().Replace("access_token=", "");
+            reader.Close();
+            response.Close();
+
+            Session["FacebookAccessToken"] = accessToken;
+
+            url = "https://graph.facebook.com/me?access_token={0}";
+
+            request = WebRequest.Create(string.Format(url, accessToken));
+            response = request.GetResponse();
+            stream = response.GetResponseStream();
+            
+            DataContractJsonSerializer json = new DataContractJsonSerializer(typeof(FacebookUser));
+            FacebookUser user = new FacebookUser();
+            user = json.ReadObject(stream) as FacebookUser;
+
+            response.Close();
+
+            Session["FacebookUserId"] = user.id;
+            FormsAuthentication.SetAuthCookie(user.email, false);
+
+            return RedirectToAction("Index", "Home");
         }
 
         //
