@@ -169,9 +169,6 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\SeedLocations.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Location\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
