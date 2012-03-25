@@ -5,6 +5,11 @@ namespace LunchVote
 {
     public class LunchVoteContext : DbContext
     {
+        public LunchVoteContext()
+        {
+            Database.SetInitializer(new CreateDatabaseIfNotExists<LunchVoteContext>());
+        }
+
         public DbSet<DiningOption> Options { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Day> Days { get; set; }
