@@ -82,6 +82,10 @@
     <Compile Include="Migrations\201203222011151_Fix_DiningOption_Location_FK.Designer.cs">
       <DependentUpon>201203222011151_Fix_DiningOption_Location_FK.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201203261757536_Fix_DiningOption_Day_navigation_fk.cs" />
+    <Compile Include="Migrations\201203261757536_Fix_DiningOption_Day_navigation_fk.Designer.cs">
+      <DependentUpon>201203261757536_Fix_DiningOption_Day_navigation_fk.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Day.cs" />
