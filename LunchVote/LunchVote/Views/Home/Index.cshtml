@@ -38,11 +38,15 @@
         });
 
         $('.vote').click(function(){
+            var voteLink = $(this);
             $.ajax({
                 url: '@Url.Action("Vote")',
                 type: 'POST',
-                data: JSON.stringify({'optionId':$(this).data('option-id')}),
+                data: JSON.stringify({'optionId':voteLink.data('option-id')}),
                 contentType: 'application/json',
+                success: function (result) {
+                    voteLink.siblings('.votes').html(result);
+                }
             });
             return false;
         });
@@ -57,7 +61,7 @@
 @foreach (var option in Model.OrderByDescending(o => o.Votes))
 {
     <li>
-        <a class="vote" data-option-id="@option.Id"><img src="@Url.Content("~/Content/upvote.jpg")" height="25" /></a>@option.Location.Name
+        <span class="votes">@option.Votes</span><a class="vote" data-option-id="@option.Id"><img src="@Url.Content("~/Content/upvote.jpg")" height="25" /></a>@option.Location.Name
     </li>
 }
 </ul>

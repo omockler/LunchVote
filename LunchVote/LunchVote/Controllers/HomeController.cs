@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Data.Entity;
-using LunchVote.Models;
+using LunchVote.Filters;
 
 namespace LunchVote.Controllers
 {
@@ -12,6 +9,7 @@ namespace LunchVote.Controllers
     {
         private LunchVoteContext db = new LunchVoteContext();
 
+        [DayCreatedFilter]
         public ActionResult Index()
         {
             ViewBag.Message = "Welcome to LunchVote!";
@@ -29,12 +27,13 @@ namespace LunchVote.Controllers
         }
 
         [HttpPost]
-        public void Vote(Guid optionId)
+        public int Vote(Guid optionId)
         {
             var day = db.Days.Where(d => d.Date == DateTime.Today).First();
             var option = day.Options.Where(o => o.Id == optionId).First();
             option.Votes++;
             db.SaveChanges();
+            return option.Votes;
         }
 
         protected override void Dispose(bool disposing)
