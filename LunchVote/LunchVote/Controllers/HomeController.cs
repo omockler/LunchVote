@@ -55,10 +55,7 @@ namespace LunchVote.Controllers
             var today = db.Days.Create();
             today.Id = Guid.NewGuid();
             today.Date = DateTime.Today;
-            foreach (var location in db.Locations)
-            {
-                today.Options.Add(new DiningOption{Day = today, Id = Guid.NewGuid(), Location = location});
-            }
+            
             db.Days.Add(today);
             db.SaveChanges();
             return today.Options;
