@@ -14,6 +14,7 @@ body {
 
 a:link {
     color: #034af3;
+    cursor: pointer;
     text-decoration: underline;
 }
 
@@ -33,6 +34,41 @@ a:active {
 p, ul {
     margin-bottom: 20px;
     line-height: 1.6em;
+}
+
+ul.location-list {
+    list-style-type: none;
+}
+
+ul.location-list li {
+    clear: both;
+    display: block;
+    float: left;
+    width: 100%;
+}
+
+ul.location-list li span.votes {
+    float: left;
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 4px;
+    width: 36px; height: 36px;
+}
+
+ul.location-list li a {
+    cursor: pointer;
+}
+
+ul.location-list li a img {
+    display: block;
+    float: left;
+    margin-right: 8px;
+}
+
+ul.location-list li span.location-name {
+    display: block;
+    float: left;
+    margin: 4px 0 0 0;
 }
 
 header,

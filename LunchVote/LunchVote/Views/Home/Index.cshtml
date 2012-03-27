@@ -57,13 +57,21 @@
 
 <a class="nominate">Nominate A Location</a>
 
-<ul>
+<ul class="location-list">
 @foreach (var option in Model.OrderByDescending(o => o.Votes))
 {
     <li>
-        <span class="votes">@option.Votes</span><a class="vote" data-option-id="@option.Id"><img src="@Url.Content("~/Content/upvote.jpg")" height="25" /></a>@option.Location.Name
+        <span class="votes">@option.Votes</span>
+        <a class="vote" data-option-id="@option.Id" title="Upvote @option.Location.Name">
+            <img src="@Url.Content("~/Content/upvote.jpg")" height="25" />
+            <span class="location-name">@option.Location.Name</span>
+        </a>
+        
     </li>
 }
 </ul>
+
+<div style="clear:both"></div>
+
 
 <div id="nominate-section"></div>
