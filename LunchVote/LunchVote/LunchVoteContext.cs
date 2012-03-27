@@ -8,6 +8,8 @@ namespace LunchVote
         public LunchVoteContext()
         {
             Database.SetInitializer(new CreateDatabaseIfNotExists<LunchVoteContext>());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<LunchVoteContext, Migrations.Configuration>());
+            Database.Initialize(false);
         }
 
         public DbSet<DiningOption> Options { get; set; }

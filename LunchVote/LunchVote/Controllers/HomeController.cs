@@ -17,9 +17,9 @@ namespace LunchVote.Controllers
             ViewBag.Message = "Welcome to LunchVote!";
 
             //Try to get todays options
-            var todaysOptions = db.Days.Where(d => d.Date == DateTime.Today).First();
-            
-            return View(todaysOptions.Options);
+            var todaysOptions = GetTodaysOptions();
+
+            return View(todaysOptions);
 
         }
 
@@ -41,6 +41,27 @@ namespace LunchVote.Controllers
         {
             db.Dispose();
             base.Dispose(disposing);
+        }
+
+        private ICollection<DiningOption> GetTodaysOptions()
+        {
+            var todaysOptions = db.Days.Where(d => d.Date == DateTime.Today).FirstOrDefault();
+
+            if(todaysOptions!=null)
+            {
+                return todaysOptions.Options;
+            }
+
+            var today = db.Days.Create();
+            today.Id = Guid.NewGuid();
+            today.Date = DateTime.Today;
+            foreach (var location in db.Locations)
+            {
+                today.Options.Add(new DiningOption{Day = today, Id = Guid.NewGuid(), Location = location});
+            }
+            db.Days.Add(today);
+            db.SaveChanges();
+            return today.Options;
         }
     }
 }
