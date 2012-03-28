@@ -6,7 +6,7 @@
 <script type="text/javascript">
     $().ready(function () {
         var nominateDialog = $('#nominate-section');
-        $('a.nominate').click(function () {
+        $('a#nominate').click(function () {
             $.ajax({
                 url: '@Url.Action("Nominate", "Location")',
                 type: 'GET',
@@ -55,23 +55,29 @@
 
 <h2>@ViewBag.Message</h2>
 
-<a class="nominate">Nominate A Location</a>
+<div class="row">
 
-<ul class="location-list">
-@foreach (var option in Model.OrderByDescending(o => o.Votes))
-{
-    <li>
-        <span class="votes">@option.Votes</span>
-        <a class="vote" data-option-id="@option.Id" title="Upvote @option.Location.Name">
-            <img src="@Url.Content("~/Content/upvote.jpg")" height="25" />
-            <span class="location-name">@option.Location.Name</span>
-        </a>
+    <div class="span4">
+        <a id="nominate" class="btn btn-primary">Nominate A Location</a>
+    </div>
+
+    <div class="span8">
+        <ul class="location-list">
+        @foreach (var option in Model.OrderByDescending(o => o.Votes))
+        {
+            <li>
+                <span class="votes">@option.Votes</span>
+                <a class="vote" data-option-id="@option.Id" title="Upvote @option.Location.Name">
+                    <img src="@Url.Content("~/Content/Images/upvote.jpg")" height="25" />
+                    <span class="location-name">@option.Location.Name</span>
+                </a>
         
-    </li>
-}
-</ul>
+            </li>
+        }
+        </ul>
+    </div>
 
-<div style="clear:both"></div>
+</div>
 
 
 <div id="nominate-section"></div>
