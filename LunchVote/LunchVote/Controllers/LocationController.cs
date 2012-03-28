@@ -115,21 +115,26 @@ namespace LunchVote.Controllers
         [HttpPost]
         public void Nominate(Guid locationId)
         {
-            var location = db.Locations.Where(l => l.Id == locationId);
-            if (location.Any())
+            var location = db.Locations.Find(locationId);
+            if (location != null)
             {
                 var today = db.Days.Where(d => d.Date == DateTime.Today).Single();
-                var nomination = new DiningOption {Id = Guid.NewGuid(), Location = location.First()};
-                if (today.Options != null)
+                if (today == null) return;
+                
+                // first make sure we have a collection started
+                if (today.Options == null) today.Options = new List<DiningOption>();
+
+                // if a location has already been nominated, then just increment the vote count
+                if (today.Options.Any(o => o.Location.Id == location.Id))
                 {
-                    today.Options.Add(nomination);
-                    
+                    today.Options.First(o => o.Location.Id == location.Id).Votes++;
                 }
                 else
                 {
-                    today.Options = new List<DiningOption> {nomination};
+                    // The location selected has not yet been nominated
+                    today.Options.Add(new DiningOption { Id = Guid.NewGuid(), Location = location, Votes = 1 });
                 }
-                
+
                 db.SaveChanges();
             }
         }
