@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using LunchVote.Models;
-using LunchVote;
 
 namespace LunchVote.Controllers
 {
@@ -109,7 +106,10 @@ namespace LunchVote.Controllers
 
         public PartialViewResult Nominate()
         {
-            return PartialView(db.Locations);
+            var previouslyNominated =
+                db.Days.First(d => d.Date == DateTime.Today).Options.Select(o => o.Location.Id);
+            
+            return PartialView(db.Locations.Where(l => !previouslyNominated.Contains(l.Id)));
         }
 
         [HttpPost]
