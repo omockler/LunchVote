@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using LunchVote.Filters;
-using LunchVote.Models;
 
 namespace LunchVote.Controllers
 {
@@ -17,7 +15,7 @@ namespace LunchVote.Controllers
             ViewBag.Message = "Welcome to LunchVote!";
 
             //Try to get todays options
-            var todaysOptions = GetTodaysOptions();
+            var todaysOptions = db.Days.Where(d => d.Date == DateTime.Today).FirstOrDefault().Options;
 
             return View(todaysOptions);
 
@@ -29,6 +27,7 @@ namespace LunchVote.Controllers
         }
 
         [HttpPost]
+        [DayCreatedFilter]
         public int Vote(Guid optionId)
         {
             var day = db.Days.Where(d => d.Date == DateTime.Today).First();
@@ -42,24 +41,6 @@ namespace LunchVote.Controllers
         {
             db.Dispose();
             base.Dispose(disposing);
-        }
-
-        private ICollection<DiningOption> GetTodaysOptions()
-        {
-            var todaysOptions = db.Days.Where(d => d.Date == DateTime.Today).FirstOrDefault();
-
-            if(todaysOptions!=null)
-            {
-                return todaysOptions.Options;
-            }
-
-            var today = db.Days.Create();
-            today.Id = Guid.NewGuid();
-            today.Date = DateTime.Today;
-            
-            db.Days.Add(today);
-            db.SaveChanges();
-            return today.Options;
         }
     }
 }

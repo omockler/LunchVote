@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web.Mvc;
+using LunchVote.Filters;
 using LunchVote.Models;
 
 namespace LunchVote.Controllers
@@ -104,6 +105,7 @@ namespace LunchVote.Controllers
             base.Dispose(disposing);
         }
 
+        [DayCreatedFilter]
         public PartialViewResult Nominate()
         {
             var previouslyNominated =
@@ -113,6 +115,7 @@ namespace LunchVote.Controllers
         }
 
         [HttpPost]
+        [DayCreatedFilter]
         public void Nominate(Guid locationId)
         {
             var location = db.Locations.Find(locationId);
