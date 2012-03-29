@@ -124,15 +124,15 @@ namespace LunchVote.Controllers
                 // first make sure we have a collection started
                 if (today.Options == null) today.Options = new List<DiningOption>();
 
-                // if a location has already been nominated, then just increment the vote count
+                // if a location has already been nominated, ignore it
                 if (today.Options.Any(o => o.Location.Id == location.Id))
                 {
-                    today.Options.First(o => o.Location.Id == location.Id).Votes++;
+                    return;
                 }
                 else
                 {
                     // The location selected has not yet been nominated
-                    today.Options.Add(new DiningOption { Id = Guid.NewGuid(), Location = location, Votes = 1 });
+                    today.Options.Add(new DiningOption { Id = Guid.NewGuid(), Location = location, Votes = 0 });
                 }
 
                 db.SaveChanges();

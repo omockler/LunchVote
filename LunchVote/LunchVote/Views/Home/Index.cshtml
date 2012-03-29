@@ -14,13 +14,11 @@
                     nominateDialog.html(data);
 
                     nominateDialog.dialog({
-                        buttons: {
-                            OK: function () { window.location = '@Url.Action("Index")' }
-                        },
-                        close: function () { window.location = '@Url.Action("Index")' },
+                        close: function () { window.location = '@Url.Action("Index")'; },
                         modal: true,
                         resizeable: false,
-                        width: 600
+                        width: 250,
+                        position: [200, 'center']
                     });
                 }
             });
@@ -33,6 +31,7 @@
                 type: 'POST',
                 data: JSON.stringify({'locationId':$(this).data('locationid')}),
                 contentType: 'application/json',
+                success: function() { window.location = '@Url.Action("Index")'; }
             });
             return false;
         });
@@ -44,9 +43,7 @@
                 type: 'POST',
                 data: JSON.stringify({'optionId':voteLink.data('option-id')}),
                 contentType: 'application/json',
-                success: function (result) {
-                    voteLink.siblings('.votes').html(result);
-                }
+                success: function (result) { voteLink.siblings('.votes').html(result); }
             });
             return false;
         });
