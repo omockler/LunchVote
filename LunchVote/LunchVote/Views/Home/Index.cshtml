@@ -3,6 +3,7 @@
     ViewBag.Title = "Home Page";
 }
 <script type="text/javascript" src="../../Content/Bootstrap/js/bootstrap-modal.js"></script>
+<script type="text/javascript" src="../../Content/Bootstrap/js/bootstrap-alert.js"></script>
 <script type="text/javascript" src="../../Content/Bootstrap/js/bootstrap-transition.js"></script>
 <script type="text/javascript">
     $().ready(function () {
@@ -16,34 +17,41 @@
                     nominateDialogBody.html(data);
                     nominateDialog.modal('show');
                     /*nominateDialog.dialog({
-                        close: function () { window.location = '@Url.Action("Index")'; },
-                        modal: true,
-                        resizeable: false,
-                        width: 250,
-                        position: [200, 'center']
+                    close: function () { window.location = '@Url.Action("Index")'; },
+                    modal: true,
+                    resizeable: false,
+                    width: 250,
+                    position: [200, 'center']
                     });*/
                 }
             });
             return false;
         });
 
-        nominateDialog.delegate('a.add-location', 'click', function () { 
+        nominateDialog.delegate('a.add-location', 'click', function () {
             $.ajax({
                 url: '@Url.Action("Nominate", "Location")',
                 type: 'POST',
-                data: JSON.stringify({'locationId':$(this).data('locationid')}),
+                data: JSON.stringify({ 'locationId': $(this).data('locationid') }),
                 contentType: 'application/json',
-                success: function() { window.location = '@Url.Action("Index")'; }
+                success: function () {
+                    nominateDialog.modal('hide');
+                    $(".alert").fadeIn();
+                    window.setTimeout(function () {
+                        $(".alert").fadeOut();
+                    }, 2500);
+
+                }
             });
             return false;
         });
 
-        $('.vote').click(function(){
+        $('.vote').click(function () {
             var voteLink = $(this);
             $.ajax({
                 url: '@Url.Action("Vote")',
                 type: 'POST',
-                data: JSON.stringify({'optionId':voteLink.data('option-id')}),
+                data: JSON.stringify({ 'optionId': voteLink.data('option-id') }),
                 contentType: 'application/json',
                 success: function (result) { voteLink.siblings('.votes').html(result); }
             });
@@ -51,6 +59,11 @@
         });
     });
 </script>
+
+<div class="alert alert-success hide">
+    <a class="close" data-dismiss="alert">×</a>
+    <strong>Congratulations!</strong> Your nomination has been added to the list of acceptable restaurant choices!
+</div>
 
 <h2>@ViewBag.Message</h2>
 
