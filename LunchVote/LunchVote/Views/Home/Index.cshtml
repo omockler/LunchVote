@@ -2,24 +2,26 @@
 @{
     ViewBag.Title = "Home Page";
 }
-
+<script type="text/javascript" src="../../Content/Bootstrap/js/bootstrap-modal.js"></script>
+<script type="text/javascript" src="../../Content/Bootstrap/js/bootstrap-transition.js"></script>
 <script type="text/javascript">
     $().ready(function () {
-        var nominateDialog = $('#nominate-section');
-        $('a#nominate').click(function () {
+        var nominateDialog = $('#modal-window');
+        var nominateDialogBody = nominateDialog.find('.modal-body');
+        $('a#myModal').click(function () {
             $.ajax({
                 url: '@Url.Action("Nominate", "Location")',
                 type: 'GET',
                 success: function (data) {
-                    nominateDialog.html(data);
-
-                    nominateDialog.dialog({
+                    nominateDialogBody.html(data);
+                    nominateDialog.modal('show');
+                    /*nominateDialog.dialog({
                         close: function () { window.location = '@Url.Action("Index")'; },
                         modal: true,
                         resizeable: false,
                         width: 250,
                         position: [200, 'center']
-                    });
+                    });*/
                 }
             });
             return false;
@@ -55,7 +57,7 @@
 <div class="row">
 
     <div class="span4">
-        <a id="nominate" class="btn btn-primary">Nominate A Location</a>
+        <a class="btn btn-primary" id="myModal" >Nominate A Location</a>
     </div>
 
     <div class="span8">
@@ -77,4 +79,10 @@
 </div>
 
 
-<div id="nominate-section"></div>
+<div id="modal-window"  class="modal hide fade">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal">×</a>
+        <h3>Nominate a Location</h3>
+    </div>
+    <div class="modal-body"></div>
+</div>

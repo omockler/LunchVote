@@ -103,8 +103,10 @@
     <Content Include="Content\Bootstrap\js\bootstrap-button.js" />
     <Content Include="Content\Bootstrap\js\bootstrap-collapse.js" />
     <Content Include="Content\Bootstrap\js\bootstrap-dropdown.js" />
+    <Content Include="Content\Bootstrap\js\bootstrap-modal.js" />
     <Content Include="Content\Bootstrap\js\bootstrap-popover.js" />
     <Content Include="Content\Bootstrap\js\bootstrap-tooltip.js" />
+    <Content Include="Content\Bootstrap\js\bootstrap-transition.js" />
     <Content Include="Content\Bootstrap\js\bootstrap.js" />
     <Content Include="Content\Bootstrap\js\bootstrap.min.js" />
     <Content Include="Content\Images\ui-bg_diagonals-thick_18_b81900_40x40.png" />

@@ -10,12 +10,6 @@ body {
     color: #696969;
 }
 
-a:link {
-    color: #034af3;
-    cursor: pointer;
-    text-decoration: underline;
-}
-
 a:visited {
     color: #505abc;
 }
